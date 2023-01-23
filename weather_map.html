@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Map</title>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css' rel='stylesheet'/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <style>
+        #map {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <!--  header-->
+    <div class="card-header text-white bg-primary d-flex">
+        <div>Weather App</div>
+        <div class="m-auto">Current City:</div>
+    </div>
+    <!--  Weather cards + map + search bar-->
+    <div class="card-body">
+        <!--    search bar-->
+        <form class="row g-3">
+            <div class="col-auto">
+                <input class="form-control" id="input" placeholder="Location">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Find</button>
+            </div>
+        </form>
+        <!--    weather cards-->
+        <div class="card-body d-flex">
+            <div class="card m-auto" style="width: 10rem;">
+                <div id="day1" class="card-header date">
+                    Day 1
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li id="temp1" class="list-group-item">Weather degrees</li>
+<!--                    <li class="list-group-item">-->
+<!--                        <img id="image1" src="" alt="">-->
+<!--                    </li>-->
+                    <li id="description1" class="list-group-item">humidity</li>
+                    <li id="humidity1" class="list-group-item">humidity</li>
+                    <li id="wind1" class="list-group-item">wind</li>
+                    <li id="pressure1" class="list-group-item">pressure</li>
+                </ul>
+            </div>
+
+            <div class="card m-auto" style="width: 10rem;">
+                <div id="day2" class="card-header">
+                    Day 2
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li id="temp2" class="list-group-item">Weather degrees + icon</li>
+                    <li id="description2" class="list-group-item">humidity</li>
+                    <li id="humidity2" class="list-group-item">humidity</li>
+                    <li id="wind2" class="list-group-item">wind</li>
+                    <li id="pressure2" class="list-group-item">pressure</li>
+                </ul>
+            </div>
+
+            <div class="card m-auto" style="width: 10rem;">
+                <div id="day3" class="card-header">
+                    Day 3
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li id="temp3" class="list-group-item">Weather degrees + icon</li>
+                    <li id="description3" class="list-group-item">humidity</li>
+                    <li id="humidity3" class="list-group-item">humidity</li>
+                    <li id="wind3" class="list-group-item">wind</li>
+                    <li id="pressure3" class="list-group-item">pressure</li>
+                </ul>
+            </div>
+
+            <div class="card m-auto" style="width: 10rem;">
+                <div id="day4" class="card-header">
+                    Day 4
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li id="temp4" class="list-group-item">Weather degrees + icon</li>
+                    <li id="description4" class="list-group-item">humidity</li>
+                    <li id="humidity4" class="list-group-item">humidity</li>
+                    <li id="wind4" class="list-group-item">wind</li>
+                    <li id="pressure4" class="list-group-item">pressure</li>
+                </ul>
+            </div>
+
+            <div class="card m-auto" style="width: 10rem;">
+                <div id="day5" class="card-header">
+                    Day 5
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li id="temp5" class="list-group-item">Weather degrees + icon</li>
+                    <li id="description5" class="list-group-item">humidity</li>
+                    <li id="humidity5" class="list-group-item">humidity</li>
+                    <li id="wind5" class="list-group-item">wind</li>
+                    <li id="pressure5" class="list-group-item">pressure</li>
+                </ul>
+            </div>
+
+        </div>
+        <hr>
+        <!--    map-->
+        <div id="map"></div>
+    </div>
+</div>
+
+
+<script src="js/key.js"></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
+<script src="js/mapbox-geocoder-utils.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+        //map
+        mapboxgl.accessToken = MAPBOX_API_KEY;
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: "mapbox://styles/mapbox/outdoors-v12",
+            zoom: 10,
+            center: [-98.4916, 29.4252]
+        });
+
+        function getDate(dt){
+            let utcSeconds = dt
+            let date = new Date(utcSeconds*1000);
+            let resultFormat = date.toISOString().split('T')[0]
+            // return $('#day1').html(resultFormat);
+            return resultFormat;
+        }
+
+        // function getWeatherIcon(icon){
+        //     let rain = "Rain"
+        //     // 10d
+        //     let clouds = "Clouds"
+        //     //02d
+        //     let clear = "Clear"
+        //     if (icon === clouds) {
+        //         let resultIcon = "https://openweathermap.org/img/w/02d.png";
+        //         return resultIcon
+        //     } else if (icon === clear) {
+        //
+        //     } else if (icon === rain) {
+        //         let resultIcon = "https://openweathermap.org/img/w/10d.png";
+        //     }
+        // }
+
+        //get weather
+        function getWeather() {
+            $.get("http://api.openweathermap.org/data/2.5/onecall", {
+                APPID: OPENWEATHER_API_KEY,
+                lat: 29.423017,
+                lon: -98.48527,
+                units: "imperial"
+            }).done(function (data) {
+                console.log('The entire response:', data);
+
+                let formatedDate = getDate(data.daily[0].dt)
+                // let formatedIcon = getWeatherIcon(data.daily[0].weather[0].main)
+                $('#day1').html(formatedDate);
+
+                $('#temp1').html(`Temp: ${data.daily[0].temp.day}\xB0`)
+                $("#description1").html(data.daily[0].weather[0].main)
+                $('#humidity1').html(`Humidity: ${data.daily[0].humidity}`)
+                $('#wind1').html(`Wind Speed: ${data.daily[0].wind_speed}`)
+                $('#pressure1').html(`Pressure: ${data.daily[0].pressure}`);
+
+                //card 2
+                formatedDate = getDate(data.daily[1].dt)
+                $('#day2').html(formatedDate);
+
+                $('#temp2').html(`Temp: ${data.daily[1].temp.day}\xB0`)
+                $("#description2").html(data.daily[1].weather[0].main)
+                $('#humidity2').html(`Humidity: ${data.daily[1].humidity}`)
+                $('#wind2').html(`Wind Speed: ${data.daily[1].wind_speed}`)
+                $('#pressure2').html(`Pressure: ${data.daily[1].pressure}`);
+
+                formatedDate = getDate(data.daily[2].dt)
+                $('#day3').html(formatedDate);
+
+                $('#temp3').html(`Temp: ${data.daily[2].temp.day}\xB0`)
+                $("#description3").html(data.daily[2].weather[0].main)
+                $('#humidity3').html(`Humidity: ${data.daily[2].humidity}`)
+                $('#wind3').html(`Wind Speed: ${data.daily[2].wind_speed}`)
+                $('#pressure3').html(`Pressure: ${data.daily[2].pressure}`);
+
+                formatedDate = getDate(data.daily[3].dt)
+                $('#day4').html(formatedDate);
+
+                $('#temp4').html(`Temp: ${data.daily[3].temp.day}\xB0`)
+                $("#description4").html(data.daily[3].weather[0].main)
+                $('#humidity4').html(`Humidity: ${data.daily[3].humidity}`)
+                $('#wind4').html(`Wind Speed: ${data.daily[3].wind_speed}`)
+                $('#pressure4').html(`Pressure: ${data.daily[3].pressure}`);
+
+                formatedDate = getDate(data.daily[4].dt)
+                $('#day5').html(formatedDate);
+
+                $('#temp5').html(`Temp: ${data.daily[4].temp.day}\xB0`)
+                $("#description5").html(data.daily[4].weather[0].main)
+                $('#humidity5').html(`Humidity: ${data.daily[4].humidity}`)
+                $('#wind5').html(`Wind Speed: ${data.daily[4].wind_speed}`)
+                $('#pressure5').html(`Pressure: ${data.daily[4].pressure}`);
+
+            });
+        }
+
+        getWeather()
+
+
+        // function pinThatRestaurant(restaurant) {
+        //   geocode(restaurant.location, MAPBOX_API_KEY).then(function (result) {
+        //     console.log(result);
+        //     const marker = new mapboxgl.Marker();
+        //     marker.setLngLat(result);
+        //     marker.addTo(map);
+        //
+        //     //makes the popup
+        //     const popup = new mapboxgl.Popup();
+        //     let str = "<div>" +
+        //             "<h3>" + restaurant.title + "</h3>" +
+        //             "<h5>" + restaurant.description + "</h5>" +
+        //             "</div>";
+        //     popup.setHTML(str);
+        //     marker.setPopup(popup);
+        //
+        //   })}
+        // $.ajax("data/restaurants.json", {dataType: 'JSON',}).done(function (data) {
+        //   console.log(data);
+        //   let str = ''
+        //   for (let i = 0; i < data.length; i++) {
+        //     pinThatRestaurant(data[i]);
+        //   }
+        // });
+    });
+</script>
+
+</body>
+</html>
