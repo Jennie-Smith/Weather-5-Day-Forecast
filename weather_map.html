@@ -39,9 +39,9 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li id="temp1" class="list-group-item">Weather degrees</li>
-<!--                    <li class="list-group-item">-->
-<!--                        <img id="image1" src="" alt="">-->
-<!--                    </li>-->
+                    <li class="list-group-item">
+                        <img id="image1" src="" alt="">
+                    </li>
                     <li id="description1" class="list-group-item">humidity</li>
                     <li id="humidity1" class="list-group-item">humidity</li>
                     <li id="wind1" class="list-group-item">wind</li>
@@ -55,6 +55,9 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li id="temp2" class="list-group-item">Weather degrees + icon</li>
+                    <li class="list-group-item">
+                        <img id="image2" src="" alt="">
+                    </li>
                     <li id="description2" class="list-group-item">humidity</li>
                     <li id="humidity2" class="list-group-item">humidity</li>
                     <li id="wind2" class="list-group-item">wind</li>
@@ -68,6 +71,9 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li id="temp3" class="list-group-item">Weather degrees + icon</li>
+                    <li class="list-group-item">
+                        <img id="image3" src="" alt="">
+                    </li>
                     <li id="description3" class="list-group-item">humidity</li>
                     <li id="humidity3" class="list-group-item">humidity</li>
                     <li id="wind3" class="list-group-item">wind</li>
@@ -81,6 +87,9 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li id="temp4" class="list-group-item">Weather degrees + icon</li>
+                    <li class="list-group-item">
+                        <img id="image4" src="" alt="">
+                    </li>
                     <li id="description4" class="list-group-item">humidity</li>
                     <li id="humidity4" class="list-group-item">humidity</li>
                     <li id="wind4" class="list-group-item">wind</li>
@@ -94,6 +103,9 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li id="temp5" class="list-group-item">Weather degrees + icon</li>
+                    <li class="list-group-item">
+                        <img id="image5" src="" alt="">
+                    </li>
                     <li id="description5" class="list-group-item">humidity</li>
                     <li id="humidity5" class="list-group-item">humidity</li>
                     <li id="wind5" class="list-group-item">wind</li>
@@ -137,25 +149,36 @@
             return resultFormat;
         }
 
-        // function getWeatherIcon(icon){
-        //     let rain = "Rain"
-        //     // 10d
-        //     let clouds = "Clouds"
-        //     //02d
-        //     let clear = "Clear"
-        //     if (icon === clouds) {
-        //         let resultIcon = "https://openweathermap.org/img/w/02d.png";
-        //         return resultIcon
-        //     } else if (icon === clear) {
-        //
-        //     } else if (icon === rain) {
-        //         let resultIcon = "https://openweathermap.org/img/w/10d.png";
-        //     }
-        // }
+        function getIcon(id){
+            if (id > 800 && id < 805) {
+                //clouds
+                return "http://openweathermap.org/img/w/04d.png";
+            } else if (id > 499 && id < 532){
+                //rain
+                return "http://openweathermap.org/img/w/10d.png";
+            } else if (id > 199 && id < 233) {
+                //thunderstorm
+                return "http://openweathermap.org/img/w/11d.png"
+            }
+            else if (id > 299 && id < 322) {
+                //drizzle
+                return "http://openweathermap.org/img/w/09d.png"
+            }
+            else if (id > 599 && id < 623) {
+                //snow
+                return "http://openweathermap.org/img/w/13d.png"
+            }else if (id > 699 && id < 782) {
+                //atmosphere
+                return "http://openweathermap.org/img/w/50d.png"
+            }else if (id === 800) {
+                //clear
+                return "http://openweathermap.org/img/w/01d.png"
+            }
+        }
 
         //get weather
         function getWeather() {
-            $.get("http://api.openweathermap.org/data/2.5/onecall", {
+            $.get("http://api.openweathermap.org/data/2.5/forecast", {
                 APPID: OPENWEATHER_API_KEY,
                 lat: 29.423017,
                 lon: -98.48527,
@@ -163,52 +186,66 @@
             }).done(function (data) {
                 console.log('The entire response:', data);
 
-                let formatedDate = getDate(data.daily[0].dt)
-                // let formatedIcon = getWeatherIcon(data.daily[0].weather[0].main)
+                let formatedDate = getDate(data.list[0].dt)
                 $('#day1').html(formatedDate);
 
-                $('#temp1').html(`Temp: ${data.daily[0].temp.day}\xB0`)
-                $("#description1").html(data.daily[0].weather[0].main)
-                $('#humidity1').html(`Humidity: ${data.daily[0].humidity}`)
-                $('#wind1').html(`Wind Speed: ${data.daily[0].wind_speed}`)
-                $('#pressure1').html(`Pressure: ${data.daily[0].pressure}`);
+                let formatedIcon = getIcon(data.list[0].weather[0].id);
+                $('#image1').attr("src", formatedIcon)
+
+                $('#temp1').html(`Temp: ${data.list[0].main.temp}\xB0`)
+                $("#description1").html(data.list[0].weather[0].main)
+                $('#humidity1').html(`Humidity: ${data.list[0].main.humidity}`)
+                $('#wind1').html(`Wind Speed: ${data.list[0].wind.speed}`)
+                $('#pressure1').html(`Pressure: ${data.list[0].main.pressure}`);
 
                 //card 2
-                formatedDate = getDate(data.daily[1].dt)
+                formatedDate = getDate(data.list[8].dt)
                 $('#day2').html(formatedDate);
 
-                $('#temp2').html(`Temp: ${data.daily[1].temp.day}\xB0`)
-                $("#description2").html(data.daily[1].weather[0].main)
-                $('#humidity2').html(`Humidity: ${data.daily[1].humidity}`)
-                $('#wind2').html(`Wind Speed: ${data.daily[1].wind_speed}`)
-                $('#pressure2').html(`Pressure: ${data.daily[1].pressure}`);
+                formatedIcon = getIcon(data.list[8].weather[0].id);
+                $('#image2').attr("src", formatedIcon)
 
-                formatedDate = getDate(data.daily[2].dt)
+                $('#temp2').html(`Temp: ${data.list[8].main.temp}\xB0`)
+                $("#description2").html(data.list[8].weather[0].main)
+                $('#humidity2').html(`Humidity: ${data.list[8].main.humidity}`)
+                $('#wind2').html(`Wind Speed: ${data.list[8].wind.speed}`)
+                $('#pressure2').html(`Pressure: ${data.list[8].main.pressure}`);
+
+                formatedDate = getDate(data.list[16].dt)
                 $('#day3').html(formatedDate);
 
-                $('#temp3').html(`Temp: ${data.daily[2].temp.day}\xB0`)
-                $("#description3").html(data.daily[2].weather[0].main)
-                $('#humidity3').html(`Humidity: ${data.daily[2].humidity}`)
-                $('#wind3').html(`Wind Speed: ${data.daily[2].wind_speed}`)
-                $('#pressure3').html(`Pressure: ${data.daily[2].pressure}`);
+                formatedIcon = getIcon(data.list[16].weather[0].id);
+                $('#image3').attr("src", formatedIcon)
 
-                formatedDate = getDate(data.daily[3].dt)
+                $('#temp3').html(`Temp: ${data.list[16].main.temp}\xB0`)
+                $("#description3").html(data.list[16].weather[0].main)
+                $('#humidity3').html(`Humidity: ${data.list[16].main.humidity}`)
+                $('#wind3').html(`Wind Speed: ${data.list[16].wind.speed}`)
+                $('#pressure3').html(`Pressure: ${data.list[16].main.pressure}`);
+
+                formatedDate = getDate(data.list[24].dt)
                 $('#day4').html(formatedDate);
 
-                $('#temp4').html(`Temp: ${data.daily[3].temp.day}\xB0`)
-                $("#description4").html(data.daily[3].weather[0].main)
-                $('#humidity4').html(`Humidity: ${data.daily[3].humidity}`)
-                $('#wind4').html(`Wind Speed: ${data.daily[3].wind_speed}`)
-                $('#pressure4').html(`Pressure: ${data.daily[3].pressure}`);
+                formatedIcon = getIcon(data.list[24].weather[0].id);
+                $('#image4').attr("src", formatedIcon)
 
-                formatedDate = getDate(data.daily[4].dt)
+                $('#temp4').html(`Temp: ${data.list[24].main.temp}\xB0`)
+                $("#description4").html(data.list[24].weather[0].main)
+                $('#humidity4').html(`Humidity: ${data.list[24].main.humidity}`)
+                $('#wind4').html(`Wind Speed: ${data.list[24].wind.speed}`)
+                $('#pressure4').html(`Pressure: ${data.list[24].main.pressure}`);
+
+                formatedDate = getDate(data.list[32].dt)
                 $('#day5').html(formatedDate);
 
-                $('#temp5').html(`Temp: ${data.daily[4].temp.day}\xB0`)
-                $("#description5").html(data.daily[4].weather[0].main)
-                $('#humidity5').html(`Humidity: ${data.daily[4].humidity}`)
-                $('#wind5').html(`Wind Speed: ${data.daily[4].wind_speed}`)
-                $('#pressure5').html(`Pressure: ${data.daily[4].pressure}`);
+                formatedIcon = getIcon(data.list[32].weather[0].id);
+                $('#image5').attr("src", formatedIcon)
+
+                $('#temp5').html(`Temp: ${data.list[32].main.temp}\xB0`)
+                $("#description5").html(data.list[32].weather[0].main)
+                $('#humidity5').html(`Humidity: ${data.list[32].main.humidity}`)
+                $('#wind5').html(`Wind Speed: ${data.list[32].wind.speed}`)
+                $('#pressure5').html(`Pressure: ${data.list[32].main.pressure}`);
 
             });
         }
