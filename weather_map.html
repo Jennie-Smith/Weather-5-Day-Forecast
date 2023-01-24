@@ -11,27 +11,25 @@
             width: 100%;
             height: 500px;
         }
+        .geocoder {
+            display: flex;
+            width: 50%;
+            left: 50%;
+            margin-bottom: 1em;
+            margin-left: 40%;
+        }
     </style>
 </head>
 <body>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 <div class="card">
     <!--  header-->
     <div class="card-header text-white bg-primary d-flex">
-        <div>Weather App</div>
-        <div class="m-auto">Current City:</div>
+        <div>Five Day Weather Forecast</div>
     </div>
     <!--  Weather cards + map + search bar-->
     <div class="card-body">
-        <!--    search bar-->
-        <form class="row g-3">
-            <div class="col-auto">
-                <input class="form-control" id="input" placeholder="Location">
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary mb-3">Find</button>
-            </div>
-        </form>
-        <!--    weather cards-->
         <div class="card-body d-flex">
             <div class="card m-auto" style="width: 10rem;">
                 <div id="day1" class="card-header date">
@@ -116,7 +114,9 @@
         </div>
         <hr>
         <!--    map-->
+        <div id="geocoder" class="geocoder"></div>
         <div id="map"></div>
+
     </div>
 </div>
 
@@ -140,6 +140,30 @@
             zoom: 10,
             center: [-98.4916, 29.4252]
         });
+
+        const geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl
+        });
+
+        document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+
+        function getCoordinates() {
+            map.on('click', (e) => {
+                let lat = e.lngLat.lat
+                let lng = e.lngLat.lng
+                let popup = new mapboxgl.Popup()
+                    .setLngLat([lng, lat])
+                    .setHTML(`lat = ${lat} lng = ${lng}`)
+                const marker = new mapboxgl.Marker()
+                    .setLngLat([lng, lat])
+                    .addTo(map);
+                popup.addTo(map);
+                getWeather(lat, lng)
+            });
+        }
+        getCoordinates()
+
 
         function getDate(dt){
             let utcSeconds = dt
@@ -176,12 +200,12 @@
             }
         }
 
-        //get weather
-        function getWeather() {
+
+        function getWeather(mylat, mylon) {
             $.get("http://api.openweathermap.org/data/2.5/forecast", {
                 APPID: OPENWEATHER_API_KEY,
-                lat: 29.423017,
-                lon: -98.48527,
+                lat: mylat,
+                lon: mylon,
                 units: "imperial"
             }).done(function (data) {
                 console.log('The entire response:', data);
@@ -250,33 +274,9 @@
             });
         }
 
-        getWeather()
+        getWeather(29.423017, -98.48527)
 
 
-        // function pinThatRestaurant(restaurant) {
-        //   geocode(restaurant.location, MAPBOX_API_KEY).then(function (result) {
-        //     console.log(result);
-        //     const marker = new mapboxgl.Marker();
-        //     marker.setLngLat(result);
-        //     marker.addTo(map);
-        //
-        //     //makes the popup
-        //     const popup = new mapboxgl.Popup();
-        //     let str = "<div>" +
-        //             "<h3>" + restaurant.title + "</h3>" +
-        //             "<h5>" + restaurant.description + "</h5>" +
-        //             "</div>";
-        //     popup.setHTML(str);
-        //     marker.setPopup(popup);
-        //
-        //   })}
-        // $.ajax("data/restaurants.json", {dataType: 'JSON',}).done(function (data) {
-        //   console.log(data);
-        //   let str = ''
-        //   for (let i = 0; i < data.length; i++) {
-        //     pinThatRestaurant(data[i]);
-        //   }
-        // });
     });
 </script>
 
