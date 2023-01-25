@@ -7,104 +7,117 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <style>
-        #map {
-            width: 100%;
-            height: 500px;
+        .bgImage {
+            background: url(image/wp5980872-pink-cloud-aesthetic-desktop-wallpapers.jpg);
+            background-size: cover;
+            color: white;
         }
-        .geocoder {
-            display: flex;
+        #map {
             width: 50%;
-            left: 50%;
-            margin-bottom: 1em;
-            margin-left: 40%;
+            height: 300px;
+        }
+        .pink {
+            background-color: #FFC0CB;
+            color: white;
+        }
+        .btn {
+            margin-top: 1em;
+        }
+        .fixText {
+            text-align: center;
         }
     </style>
 </head>
 <body>
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+
+<audio id="wow" preload="auto">
+    <source src="sound/anime-wow-effect.mp3" type="audio/mpeg">
+</audio>
+
 <div class="card">
     <!--  header-->
-    <div class="card-header text-white bg-primary d-flex">
-        <div>Five Day Weather Forecast</div>
+    <div class="card-header bgImage">
+        <h3 class="fixText">Five Day Weather Forecast</h3>
     </div>
     <!--  Weather cards + map + search bar-->
     <div class="card-body">
         <div class="card-body d-flex">
-            <div class="card m-auto" style="width: 10rem;">
-                <div id="day1" class="card-header date">
+            <div class="card fixText m-auto" style="width: 10rem;">
+                <div id="day1" class="card-header pink date">
                     Day 1
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li id="temp1" class="list-group-item">Weather degrees</li>
+                    <li id="temp1" class="list-group-item">Degrees</li>
                     <li class="list-group-item">
                         <img id="image1" src="" alt="">
                     </li>
-                    <li id="description1" class="list-group-item">humidity</li>
+                    <li id="description1" class="list-group-item">Weather</li>
                     <li id="humidity1" class="list-group-item">humidity</li>
                     <li id="wind1" class="list-group-item">wind</li>
                     <li id="pressure1" class="list-group-item">pressure</li>
                 </ul>
             </div>
 
-            <div class="card m-auto" style="width: 10rem;">
-                <div id="day2" class="card-header">
+            <div class="card fixText m-auto" style="width: 10rem;">
+                <div id="day2" class="card-header bgImage">
                     Day 2
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li id="temp2" class="list-group-item">Weather degrees + icon</li>
+                    <li id="temp2" class="list-group-item">Degrees</li>
                     <li class="list-group-item">
                         <img id="image2" src="" alt="">
                     </li>
-                    <li id="description2" class="list-group-item">humidity</li>
+                    <li id="description2" class="list-group-item">Weather</li>
                     <li id="humidity2" class="list-group-item">humidity</li>
                     <li id="wind2" class="list-group-item">wind</li>
                     <li id="pressure2" class="list-group-item">pressure</li>
                 </ul>
             </div>
 
-            <div class="card m-auto" style="width: 10rem;">
-                <div id="day3" class="card-header">
+            <div class="card fixText m-auto" style="width: 10rem;">
+                <div id="day3" class="card-header pink">
                     Day 3
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li id="temp3" class="list-group-item">Weather degrees + icon</li>
+                    <li id="temp3" class="list-group-item">Degrees</li>
                     <li class="list-group-item">
                         <img id="image3" src="" alt="">
                     </li>
-                    <li id="description3" class="list-group-item">humidity</li>
+                    <li id="description3" class="list-group-item">Weather</li>
                     <li id="humidity3" class="list-group-item">humidity</li>
                     <li id="wind3" class="list-group-item">wind</li>
                     <li id="pressure3" class="list-group-item">pressure</li>
                 </ul>
             </div>
 
-            <div class="card m-auto" style="width: 10rem;">
-                <div id="day4" class="card-header">
+            <div class="card fixText m-auto" style="width: 10rem;">
+                <div id="day4" class="card-header bgImage">
                     Day 4
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li id="temp4" class="list-group-item">Weather degrees + icon</li>
+                    <li id="temp4" class="list-group-item">Degrees</li>
                     <li class="list-group-item">
                         <img id="image4" src="" alt="">
                     </li>
-                    <li id="description4" class="list-group-item">humidity</li>
+                    <li id="description4" class="list-group-item">Weather</li>
                     <li id="humidity4" class="list-group-item">humidity</li>
                     <li id="wind4" class="list-group-item">wind</li>
                     <li id="pressure4" class="list-group-item">pressure</li>
                 </ul>
             </div>
 
-            <div class="card m-auto" style="width: 10rem;">
-                <div id="day5" class="card-header">
+            <div class="card fixText m-auto" style="width: 10rem;">
+                <div id="day5" class="card-header pink">
                     Day 5
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li id="temp5" class="list-group-item">Weather degrees + icon</li>
+                    <li id="temp5" class="list-group-item">Degrees</li>
                     <li class="list-group-item">
                         <img id="image5" src="" alt="">
                     </li>
-                    <li id="description5" class="list-group-item">humidity</li>
+                    <li id="description5" class="list-group-item">Weather</li>
                     <li id="humidity5" class="list-group-item">humidity</li>
                     <li id="wind5" class="list-group-item">wind</li>
                     <li id="pressure5" class="list-group-item">pressure</li>
@@ -114,19 +127,17 @@
         </div>
         <hr>
         <!--    map-->
-<!--        <div id="geocoder" class="geocoder"></div>-->
-        <form>
-            <div class="row mb-2">
+        <div class="container-fluid d-flex justify-content-evenly">
+            <div class="row">
                 <div class="col" style="width: 20rem;">
                     <input class="form-control" id="searchBar" placeholder="Enter Location">
-                </div>
-                <div class="col">
-                    <button id="btn" type="submit" class="btn btn-primary">Submit</button>
+                    <button id="btn" type="submit" class="btn pink">Submit</button>
                 </div>
             </div>
-        </form>
-        <div id="map"></div>
 
+            <div id="map" class="d-"></div>
+        </div>
+<!--        end-->
     </div>
 </div>
 
@@ -155,6 +166,7 @@
             e.preventDefault()
             let search =  $("#searchBar")[0].value;
             pinThatAddress(search)
+            $('audio#wow')[0].play();
             // $('#searchBar')[0].value = ""
         });
 
@@ -172,18 +184,11 @@
                 const popup = new mapboxgl.Popup();
                 popup.setHTML(`<h3>${address}</h3>`);
                 marker.setPopup(popup);
-                // marker.flyTo({
-                //     center: [(Math.random() - 0.5) * 360, (Math.random() - 0.5) * 100],
-                //     essential: true // this animation is considered essential with respect to prefers-reduced-motion
-                // });
                 getWeather(result[1], result[0]);
-            //result 0 = lng
-            //    result 1 = lat
             }).catch(function(error) {
                 console.log("Bam");
             });
         }
-        // pinThatAddress(search)
 
 
         function getCoordinates() {
@@ -247,72 +252,25 @@
                 units: "imperial"
             }).done(function (data) {
                 console.log('The entire response:', data);
+                console.log(data.length)
+                let idCycle = 1
+                for (let i = 0; i < data.list.length; i +=8 ) {
+                    let formatedDate = getDate(data.list[i].dt)
+                    $(`#day${idCycle}`).html(formatedDate);
 
-                let formatedDate = getDate(data.list[0].dt)
-                $('#day1').html(formatedDate);
+                    let formatedIcon = getIcon(data.list[i].weather[0].id);
+                    $(`#image${idCycle}`).attr("src", formatedIcon)
 
-                let formatedIcon = getIcon(data.list[0].weather[0].id);
-                $('#image1').attr("src", formatedIcon)
-
-                $('#temp1').html(`Temp: ${data.list[0].main.temp}\xB0`)
-                $("#description1").html(data.list[0].weather[0].main)
-                $('#humidity1').html(`Humidity: ${data.list[0].main.humidity}`)
-                $('#wind1').html(`Wind Speed: ${data.list[0].wind.speed}`)
-                $('#pressure1').html(`Pressure: ${data.list[0].main.pressure}`);
-
-                //card 2
-                formatedDate = getDate(data.list[8].dt)
-                $('#day2').html(formatedDate);
-
-                formatedIcon = getIcon(data.list[8].weather[0].id);
-                $('#image2').attr("src", formatedIcon)
-
-                $('#temp2').html(`Temp: ${data.list[8].main.temp}\xB0`)
-                $("#description2").html(data.list[8].weather[0].main)
-                $('#humidity2').html(`Humidity: ${data.list[8].main.humidity}`)
-                $('#wind2').html(`Wind Speed: ${data.list[8].wind.speed}`)
-                $('#pressure2').html(`Pressure: ${data.list[8].main.pressure}`);
-
-                formatedDate = getDate(data.list[16].dt)
-                $('#day3').html(formatedDate);
-
-                formatedIcon = getIcon(data.list[16].weather[0].id);
-                $('#image3').attr("src", formatedIcon)
-
-                $('#temp3').html(`Temp: ${data.list[16].main.temp}\xB0`)
-                $("#description3").html(data.list[16].weather[0].main)
-                $('#humidity3').html(`Humidity: ${data.list[16].main.humidity}`)
-                $('#wind3').html(`Wind Speed: ${data.list[16].wind.speed}`)
-                $('#pressure3').html(`Pressure: ${data.list[16].main.pressure}`);
-
-                formatedDate = getDate(data.list[24].dt)
-                $('#day4').html(formatedDate);
-
-                formatedIcon = getIcon(data.list[24].weather[0].id);
-                $('#image4').attr("src", formatedIcon)
-
-                $('#temp4').html(`Temp: ${data.list[24].main.temp}\xB0`)
-                $("#description4").html(data.list[24].weather[0].main)
-                $('#humidity4').html(`Humidity: ${data.list[24].main.humidity}`)
-                $('#wind4').html(`Wind Speed: ${data.list[24].wind.speed}`)
-                $('#pressure4').html(`Pressure: ${data.list[24].main.pressure}`);
-
-                formatedDate = getDate(data.list[32].dt)
-                $('#day5').html(formatedDate);
-
-                formatedIcon = getIcon(data.list[32].weather[0].id);
-                $('#image5').attr("src", formatedIcon)
-
-                $('#temp5').html(`Temp: ${data.list[32].main.temp}\xB0`)
-                $("#description5").html(data.list[32].weather[0].main)
-                $('#humidity5').html(`Humidity: ${data.list[32].main.humidity}`)
-                $('#wind5').html(`Wind Speed: ${data.list[32].wind.speed}`)
-                $('#pressure5').html(`Pressure: ${data.list[32].main.pressure}`);
-
+                    $(`#temp${idCycle}`).html(`Temp: ${data.list[i].main.temp}\xB0`)
+                    $(`#description${idCycle}`).html(data.list[i].weather[0].main)
+                    $(`#humidity${idCycle}`).html(`Humidity: ${data.list[i].main.humidity}`)
+                    $(`#wind${idCycle}`).html(`Wind: ${data.list[i].wind.speed}`)
+                    $(`#pressure${idCycle}`).html(`Pressure: ${data.list[i].main.pressure}`);
+                    console.log(idCycle)
+                    idCycle += 1
+                }
             });
         }
-
-        // getWeather(29.423017, -98.48527)
 
 
     });
